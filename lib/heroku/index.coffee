@@ -36,7 +36,7 @@ class Heroku
         options.headers["Content-Length"] = "0"
 
     emitter = new events.EventEmitter()
-    request = rest.request(process.env.API_HOST + path, options)
+    request = rest.request('https://api.heroku.com' + path, options)
 
     request.on "success", (data, response) ->
       switch response.headers["content-type"].split(";")[0]
