@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# bin/compile <git-source-repo> <git-source-branch> <git-destination-repo> <git-destination-branch>
+# bin/compile run <git-source-repo> <git-source-branch> <git-destination-repo> <git-destination-branch>
 
+# fail fast
 set -e
 
 if [ "run" != "$1" ]; then
@@ -39,6 +40,8 @@ echo "Adding remote deploy $GIT_DESTINATION_REPO"
 git remote add deploy $GIT_DESTINATION_REPO
 echo "Pushing to deploy $GIT_SOURCE_BRANCH:$GIT_DESTINATION_BRANCH"
 git push deploy $GIT_SOURCE_BRANCH:$GIT_DESTINATION_BRANCH
+
+set +e
 
 echo "Cleaning up..."
 rm -f "$IDENTITY_FILE"
