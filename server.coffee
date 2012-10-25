@@ -83,16 +83,16 @@ http.createServer (req, res) ->
 
     deploySh = run_process.spawn 'sh', ['./deploy.sh', 'run'].concat vars
     deploySh.stdout.on 'data', (data) ->
-      output += "<p>#{data}</p>"
+      output += data
     deploySh.stderr.on 'data', (data) ->
-      output += "<p>#{data}</p>"
+      output += data
       commit = data.toString()
     deploySh.on 'exit', (code) ->
       sendEmail
           "config_vars": config_vars,
           "app": app
           "commit": commit
-        , code, '<h2>SHELL OUTPUT:</h2>\n' + output + '\n<em>child process exited with code ' + code + '</em>'
+        , code, '<h2>SHELL OUTPUT:</h2><code>' + output + '</code><hr/><em>child process exited with code ' + code + '</em>'
 
   deploy_config.on "error", (data, response) ->
     console.error "ERROR: " + app + " => " + (error_msg[response.statusCode] || "Some error occured.")
