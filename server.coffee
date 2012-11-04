@@ -1,8 +1,8 @@
-http        = require('http')
-run_process = require('child_process')
-heroku      = require('heroku')
-nodemailer  = require('nodemailer')
-ansi_up     = require('ansi_up')
+http        = require 'http'
+run_process = require 'child_process'
+heroku      = require 'heroku'
+nodemailer  = require 'nodemailer'
+ansi_up     = require 'ansi_up'
 
 error_msg =
   "200": "OK - Request succeeded, response contains requested data.",

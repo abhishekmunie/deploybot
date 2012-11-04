@@ -2,7 +2,10 @@
   "name":         "deploybot",
   "description":  "Deploys heroku apps from git repository.",
   "keywords":     ["deploy", "heroku", "git"],
-  "author":       "Abhishek Munie",
+  "authors": [{
+    "name": "Abhishek Munie",
+    "email": "contact@abhishekmunie.com"
+  }],
   "version":      "0.1.1",
   "engines":      {
     "node":         ">=0.8.12",
