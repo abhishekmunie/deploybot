@@ -92,7 +92,7 @@ http.createServer (req, res) ->
           "config_vars": config_vars,
           "app": app
           "commit": commit
-        , code, '<h2>SHELL OUTPUT:</h2><code>' + output + '</code><hr/><em>child process exited with code ' + code + '</em>'
+        , code, '<h2>SHELL OUTPUT:</h2><code>' + output.replace(/\n/g, "<br/>") + '</code><hr/><em>child process exited with code ' + code + '</em>'
 
   deploy_config.on "error", (data, response) ->
     console.error "ERROR: " + app + " => " + (error_msg[response.statusCode] || "Some error occured.")
