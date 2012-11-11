@@ -23,10 +23,10 @@ smtpTransport = nodemailer.createTransport "SMTP",
 sendEmail = (vars, code, output) ->
   if output.indexOf("Everything up-to-date") != -1
     if (send_to = vars.config_vars["SEND_DEPLOY_ALREADYUPDATE"])
-      return
-    else
       subject = "UP-TO-DATE: " + vars.commit
       body = "<h1>#{vars.app} was already up-to-date :</h1>\n" + output
+    else
+      return
   else if code == 0
     send_to = vars.config_vars["SEND_DEPLOY_SUCCESS"]
     subject = "SUCCESS: " + vars.commit
