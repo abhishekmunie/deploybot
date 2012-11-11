@@ -16,12 +16,15 @@ Add the following [config-vars](https://devcenter.heroku.com/articles/config-var
 
 Additional configs:
 
-    SEND_DEPLOY_SUCCESS : set false if you dont want e-mail for successful deployments.
-                          If you want reports to be sent to only some collaborators
-                          set an array of their e-mail id.
-    SEND_DEPLOY_ERROR   : set false if you dont want e-mail for deployment errors.
-                          If you want reports to be sent to only some collaborators
-                          set an array of their e-mail id.
+    SEND_DEPLOY_SUCCESS       : set false if you dont want e-mail for successful deployments.
+                                If you want reports to be sent to only some collaborators
+                                set an array of their e-mail id. (default: true)
+    SEND_DEPLOY_ERROR         : set false if you dont want e-mail for deployment errors.
+                                If you want reports to be sent to only some collaborators
+                                set an array of their e-mail id. (default: true)
+    SEND_DEPLOY_ALREADYUPDATE : set true if you want e-mail when repository was already up-to-date.
+                                If you want reports to be sent to only some collaborators
+                                set an array of their e-mail id. (default: false)
 
 Now send a request at `deploybot.abhishekmunie.com/:your-heroku-app` to initiate deploy.
 

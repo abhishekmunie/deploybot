@@ -21,15 +21,23 @@ smtpTransport = nodemailer.createTransport "SMTP",
       pass: process.env.EMAIL_PASS
 
 sendEmail = (vars, code, output) ->
-  if output.indexOf("Everything up-to-date") != -1 then return
-  if code == 0 && (send_to = vars.config_vars["SEND_DEPLOY_SUCCESS"]) != false
+  if output.indexOf("Everything up-to-date") != -1
+    if (send_to = vars.config_vars["SEND_DEPLOY_ALREADYUPDATE"])
+      return
+    else
+      subject = "UP-TO-DATE: " + vars.commit
+      body = "<h1>#{vars.app} was already up-to-date :</h1>\n" + output
+  else if code == 0
+    send_to = vars.config_vars["SEND_DEPLOY_SUCCESS"]
     subject = "SUCCESS: " + vars.commit
     body = "<h1>Successfully deployed #{vars.app} :)</h1>\n" + output
-  else if (send_to = vars.config_vars["SEND_DEPLOY_ERROR"]) != false
+  else 
+    send_to = vars.config_vars["SEND_DEPLOY_ERROR"]
     subject = "ERROR: " + vars.commit
     body = "<h1>Sorry I couldn't deploy #{vars.app} :(</h1>\n" + output
-  else
-    return
+
+  send_to = true if send_to == undefined || send_to == "true"
+  return if send_to == false || send_to == "false"
 
   deploy_colab = heroku.api(process.env.HEROKU_API_KEY, "application/json").request("GET", "/apps/" + vars.app + "/collaborators")
 
@@ -42,14 +50,14 @@ sendEmail = (vars, code, output) ->
 
     collab_to = []
     for colab in collaborators
-      if !send_to || send_to.indexOf(colab["email"]) != -1
+      if send_to == true || send_to.indexOf(colab["email"]) != -1
         collab_to.push if colab["name"] then "#{colab["name"]} <#{colab["email"]}>" else colab["email"]
 
     smtpTransport.sendMail
-        from: "#{process.env.EMAIL_NAME} <#{process.env.EMAIL_USER}>", # sender address
-        to: collab_to.toString(),                                      # list of receivers
-        subject: subject,                                              # Subject line
-        html: ansi_up.ansi_to_html body                                # html body
+        from: "#{process.env.EMAIL_NAME} <#{process.env.EMAIL_USER}>",
+        to: collab_to.toString(),
+        subject: subject,
+        html: ansi_up.ansi_to_html body
       ,(error, response) ->
         if error
           console.error error
