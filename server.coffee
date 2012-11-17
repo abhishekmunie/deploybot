@@ -31,7 +31,7 @@ sendEmail = (vars, code, output) ->
     send_to = vars.config_vars["SEND_DEPLOY_SUCCESS"]
     subject = "SUCCESS: " + vars.commit
     body = "<h1>Successfully deployed #{vars.app} :)</h1>\n" + output
-  else 
+  else
     send_to = vars.config_vars["SEND_DEPLOY_ERROR"]
     subject = "ERROR: " + vars.commit
     body = "<h1>Sorry I couldn't deploy #{vars.app} :(</h1>\n" + output
@@ -67,10 +67,10 @@ sendEmail = (vars, code, output) ->
 
 http.createServer (req, res) ->
   app = req.url.slice(1)
-  res.writeHead 302, {'Location': 'https://deploybot-dashboard.herokuapp.com'} if app == ''  
+  res.writeHead 302, {'Location': 'https://deploybot-dashboard.herokuapp.com'} if app == ''
   res.end()
 
-  return if app == "favicon.ico" || app == '' 
+  return if app == "favicon.ico" || app == ''
 
   deploy_config = heroku.api(process.env.HEROKU_API_KEY, "application/json").request("GET", "/apps/" + app + "/config_vars")
 
@@ -100,7 +100,7 @@ http.createServer (req, res) ->
           "config_vars": config_vars,
           "app": app
           "commit": commit
-        , code, '<h2>SHELL OUTPUT:</h2><code>' + output.replace(/\n/g, "<br/>") + '</code><hr/><em>child process exited with code ' + code + '</em>'
+        , code, '<h2>SHELL OUTPUT:</h2><code style="white-space: pre-wrap;">' + output + '</code><hr/><em>child process exited with code ' + code + '</em>'
 
   deploy_config.on "error", (data, response) ->
     console.error "ERROR: " + app + " => " + (error_msg[response.statusCode] || "Some error occured.")
