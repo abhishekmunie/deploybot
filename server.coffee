@@ -82,8 +82,8 @@ http.createServer (req, res) ->
       console.error "JSON prase error: " + err
 
     vars = [
-      config_vars["GIT_SOURCE_REPO"],
-      config_vars["GIT_SOURCE_BRANCH"] || "master",
+      config_vars["SOURCE_REPO"],
+      config_vars["SOURCE_BRANCH"] || "master",
       "git@heroku.com:" + app + ".git",
       "master"
     ]
