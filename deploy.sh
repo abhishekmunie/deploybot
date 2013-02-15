@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# bin/compile run <git-source-repo> <git-source-branch> <git-destination-repo> <git-destination-branch>
+# bin/compile run <source-repo> <source-branch> <destination-repo> <destination-branch>
 
 # fail fast
 set -e
@@ -9,13 +9,13 @@ if [ "run" != "$1" ]; then
 fi
 
 # parse args
-GIT_SOURCE_REPO=$2
-GIT_SOURCE_BRANCH=$3
-GIT_DESTINATION_REPO=$4
-GIT_DESTINATION_BRANCH=$5
+SOURCE_REPO=$2
+SOURCE_BRANCH=$3
+DESTINATION_REPO=$4
+DESTINATION_BRANCH=$5
 
-echo "Source Git Repo: $GIT_SOURCE_REPO #$GIT_SOURCE_BRANCH"
-echo "Destination Git Reop: $GIT_DESTINATION_REPO #$GIT_DESTINATION_BRANCH"
+echo "Source Git Repo: $SOURCE_REPO #$SOURCE_BRANCH"
+echo "Destination Git Reop: $DESTINATION_REPO #$DESTINATION_BRANCH"
 
 self="$( cd "$( dirname "$0" )" && pwd )"/$0
 
@@ -33,13 +33,13 @@ eval $(ssh-agent)
 ssh-add "$IDENTITY_FILE"
 
 echo "Using Git Version: `git --version`"
-echo "Cloning $GIT_SOURCE_REPO : $GIT_SOURCE_BRANCH in $repo"
-git clone --bare --recursive --branch $GIT_SOURCE_BRANCH $GIT_SOURCE_REPO $repo
+echo "Cloning $SOURCE_REPO : $SOURCE_BRANCH in $repo"
+git clone --bare --recursive --branch $SOURCE_BRANCH $SOURCE_REPO $repo
 cd $repo
-echo "Adding remote deploy $GIT_DESTINATION_REPO"
-git remote add deploy $GIT_DESTINATION_REPO
-echo "Pushing to deploy $GIT_SOURCE_BRANCH:$GIT_DESTINATION_BRANCH"
-git push deploy $GIT_SOURCE_BRANCH:$GIT_DESTINATION_BRANCH
+echo "Adding remote deploy $DESTINATION_REPO"
+git remote add deploy $DESTINATION_REPO
+echo "Pushing to deploy $SOURCE_BRANCH:$DESTINATION_BRANCH"
+git push deploy $SOURCE_BRANCH:$DESTINATION_BRANCH
 
 set +e
 
