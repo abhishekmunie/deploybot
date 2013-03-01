@@ -67,8 +67,9 @@ sendEmail = (vars, code, output) ->
 
 http.createServer (req, res) ->
   app = req.url.slice(1)
-  res.writeHead 302, {'Location': 'https://deploybot-dashboard.herokuapp.com'} if app == ''
-  res.end()
+  if app == ''
+    res.writeHead 302, {'Location': 'https://deploybot-dashboard.herokuapp.com'}
+    res.end()
 
   return if app == "favicon.ico" || app == ''
 
@@ -105,4 +106,5 @@ http.createServer (req, res) ->
   deploy_config.on "error", (data, response) ->
     console.error "ERROR: " + app + " => " + (error_msg[response.statusCode] || "Some error occured.")
 
-.listen process.env.C9_PORT || process.env.PORT || process.env.VCAP_APP_PORT || process.env.VMC_APP_PORT || 1337 || 8001
+.listen process.env.C9_PORT || process.env.PORT || process.env.VCAP_APP_PORT || process.env.VMC_APP_PORT || 1337 || 8001, ->
+  console.log "Listening ..."
