@@ -14,20 +14,22 @@ error_msg =
   "422": "Unprocessable Entity - An error has occurred, see response body for details.",
   "423": "Locked - This API command requires confirmation. Pass the app name as a 'confirm' parameter."
 
+console.time 'Server Started in'
+
 smtpTransport = nodemailer.createTransport "SMTP",
-    service: "Gmail",
+    service: "Gmail"
     auth:
-      user: process.env.EMAIL_USER,
+      user: process.env.EMAIL_USER
       pass: process.env.EMAIL_PASS
 
 sendEmail = (vars, code, output) ->
-  if output.indexOf("Everything up-to-date") != -1
+  if output.indexOf("Everything up-to-date") isnt -1
     if (send_to = vars.config_vars["SEND_DEPLOY_ALREADYUPDATE"])
       subject = "UP-TO-DATE: " + vars.commit
       body = "<h1>#{vars.app} was already up-to-date :</h1>\n" + output
     else
       return
-  else if code == 0
+  else if code is 0
     send_to = vars.config_vars["SEND_DEPLOY_SUCCESS"]
     subject = "SUCCESS: " + vars.commit
     body = "<h1>Successfully deployed #{vars.app} :)</h1>\n" + output
@@ -36,8 +38,8 @@ sendEmail = (vars, code, output) ->
     subject = "ERROR: " + vars.commit
     body = "<h1>Sorry I couldn't deploy #{vars.app} :(</h1>\n" + output
 
-  send_to = true if send_to == undefined || send_to == "true"
-  return if send_to == false || send_to == "false"
+  send_to = true if send_to is undefined or send_to is "true"
+  return if send_to is false or send_to is "false"
 
   deploy_colab = heroku.api(process.env.HEROKU_API_KEY, "application/json").request("GET", "/apps/" + vars.app + "/collaborators")
 
@@ -50,28 +52,26 @@ sendEmail = (vars, code, output) ->
 
     collab_to = []
     for colab in collaborators
-      if send_to == true || send_to.indexOf(colab["email"]) != -1
+      if send_to is true or send_to.indexOf(colab["email"]) isnt -1
         collab_to.push if colab["name"] then "#{colab["name"]} <#{colab["email"]}>" else colab["email"]
 
     smtpTransport.sendMail
-        from: "#{process.env.EMAIL_NAME} <#{process.env.EMAIL_USER}>",
-        to: collab_to.toString(),
-        subject: subject,
+        from: "#{process.env.EMAIL_NAME} <#{process.env.EMAIL_USER}>"
+        to: collab_to.toString()
+        subject: subject
         html: ansi_up.ansi_to_html body
       ,(error, response) ->
-        if error
-          console.error error
+        console.error error if error
 
   deploy_colab.on "error", (data, response) ->
     console.error "ERROR:\n\tDATA: " + data + "\n\tRESPONSE: " + response
 
 http.createServer (req, res) ->
   app = req.url.slice(1)
-  if app == ''
+  if app is ''
     res.writeHead 302, {'Location': 'https://deploybot-dashboard.herokuapp.com'}
     res.end()
-
-  return if app == "favicon.ico" || app == ''
+  return if app is "favicon.ico" or app is ''
 
   deploy_config = heroku.api(process.env.HEROKU_API_KEY, "application/json").request("GET", "/apps/" + app + "/config_vars")
 
@@ -98,13 +98,14 @@ http.createServer (req, res) ->
       commit = data.toString()
     deploySh.on 'exit', (code) ->
       sendEmail
-          "config_vars": config_vars,
-          "app": app
-          "commit": commit
-        , code, '<h2>SHELL OUTPUT:</h2><code style="white-space: pre-wrap;">' + output + '</code><hr/><em>child process exited with code ' + code + '</em>'
+        "config_vars" : config_vars
+        "app"         : app
+        "commit"      : commit
+      , code, '<h2>SHELL OUTPUT:</h2><code style="white-space: pre-wrap;">' + output + '</code><hr/><em>child process exited with code ' + code + '</em>'
 
   deploy_config.on "error", (data, response) ->
     console.error "ERROR: " + app + " => " + (error_msg[response.statusCode] || "Some error occured.")
 
-.listen process.env.C9_PORT || process.env.PORT || process.env.VCAP_APP_PORT || process.env.VMC_APP_PORT || 1337 || 8001, ->
+.listen process.env.PORT or process.env.C9_PORT or process.env.VCAP_APP_PORT or process.env.VMC_APP_PORT or 1337, ->
+  console.timeEnd 'Server Started in'
   console.log "Listening ..."
