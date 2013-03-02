@@ -68,8 +68,7 @@ sendEmail = (vars, code, output) ->
 
 http.createServer (req, res) ->
   app = req.url.slice(1)
-  if app is ''
-    res.writeHead 302, {'Location': 'https://deploybot-dashboard.herokuapp.com'}
+  res.writeHead 302, {'Location': 'https://deploybot-dashboard.herokuapp.com'} if app is ''
   res.end()
   return if app is "favicon.ico" or app is ''
 
