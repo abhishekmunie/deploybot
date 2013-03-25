@@ -33,6 +33,7 @@ To automate deploy add a github service hook for
 at [https://github.com/:github-user/:your-github-app/admin/hooks](https://github.com/:github-user/:your-github-app/admin/hooks)
 
 If you are using [Travis CI](http://travis-ci.org/), simply add the following to your `.travis.yml` file
+
     after_success:
      - curl http://deploybot.abhishekmunie.com/:your-heroku-app
 
