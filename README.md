@@ -1,6 +1,6 @@
 # [Deploy Bot](http://abhishekmunie.com/projects/deploybot)
 
-A [Node.js](http://nodejs.org) server which deploys heroku apps from a git repo 
+A [Node.js](http://nodejs.org) server which deploys heroku apps from a git repo
 when a request is recieved at `/:your-heroku-app` and emails the result to all collaborators.
 
 ## Using pre-deployed verion of deploybot
@@ -28,9 +28,13 @@ Additional configs:
 
 Now send a request at `deploybot.abhishekmunie.com/:your-heroku-app` to initiate deploy.
 
-To automate deploy add a github service hook for 
+To automate deploy add a github service hook for
 [http://deploybot.abhishekmunie.com/:your-heroku-app](http://deploybot.abhishekmunie.com/:your-heroku-app)
 at [https://github.com/:github-user/:your-github-app/admin/hooks](https://github.com/:github-user/:your-github-app/admin/hooks)
+
+If you are using [Travis CI](http://travis-ci.org/), simply add the following to your `.travis.yml` file
+    after_success:
+     - curl http://deploybot.abhishekmunie.com/:your-heroku-app
 
 ## Useage
 To use your own deloybot, deploy it to [Heroku](https://www.heroku.com) and add the following
