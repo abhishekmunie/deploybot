@@ -12,7 +12,7 @@
     "npm":          ">=1.1.39"
   },
   "dependencies": {
-    "coffee-script": "1.2.x",
+    "coffee-script": "latest",
     "restler":       "latest",
     "ansi_up":       "latest",
     "nodemailer":    "latest"
