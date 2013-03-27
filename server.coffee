@@ -95,7 +95,7 @@ http.createServer (req, res) ->
     deploySh.stderr.on 'data', (data) ->
       output += data
       commit = data.toString()
-    deploySh.on 'exit', (code) ->
+    deploySh.on 'close', (code) ->
       sendEmail
         "config_vars" : config_vars
         "app"         : app
