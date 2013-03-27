@@ -47,7 +47,7 @@ class Heroku
             console.log "error parsing json: " + error
       emitter.emit "success", data, response
 
-    request.on "error", (data, response) ->
+    request.on "error", (err, response) ->
       emitter.emit "error", data, response
 
     emitter
