@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "coffee-script": "latest",
-    "restler":       "latest",
     "ansi_up":       "latest",
     "nodemailer":    "latest"
   },
