@@ -73,7 +73,10 @@ http.createServer (req, res) ->
   app = req.url.slice(1)
   res.writeHead 302, {'Location': 'https://deploybot-dashboard.herokuapp.com'} if app is ''
   res.end()
-  return if app is "favicon.ico" or app is ''
+
+  switch app
+    when "","favicon.ico","robots.txt"
+      return
 
   deploy_config = heroku.api(process.env.HEROKU_API_KEY, "application/json").request("GET", "/apps/" + app + "/config_vars")
 
