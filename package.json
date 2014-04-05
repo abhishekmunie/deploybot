@@ -15,7 +15,8 @@
     "coffee-script": "latest",
     "ansi_up":       "latest",
     "nodemailer":    "latest",
-    "restler":       "latest"
+    "restler":       "latest",
+    "pg":            "latest"
   },
   "main" :        "server.js",
   "homepage":     "http://abhishekmunie.com/projects/deploybot",

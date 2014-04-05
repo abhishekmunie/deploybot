@@ -1,6 +1,6 @@
-events = require("events")
-qs     = require("querystring")
-rest   = require("restler")
+events = require "events"
+qs     = require "querystring"
+rest   = require "restler"
 
 class Heroku
 
