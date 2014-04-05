@@ -3,6 +3,7 @@ run_process = require 'child_process'
 heroku      = require 'heroku'
 nodemailer  = require 'nodemailer'
 ansi_up     = require 'ansi_up'
+pg          = require 'pg'
 
 error_msg =
   "200": "OK - Request succeeded, response contains requested data.",
@@ -13,6 +14,8 @@ error_msg =
   "412": "Precondition Failed - This API has been deprecated.",
   "422": "Unprocessable Entity - An error has occurred, see response body for details.",
   "423": "Locked - This API command requires confirmation. Pass the app name as a 'confirm' parameter."
+
+conString = process.env['DATABASE_URL']
 
 console.time 'Server Started in'
 
