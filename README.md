@@ -30,7 +30,7 @@ Now send a request at `deploybot.abhishekmunie.com/:your-heroku-app` to initiate
 
 To automate deploy add a github service hook for
 [http://deploybot.abhishekmunie.com/:your-heroku-app](http://deploybot.abhishekmunie.com/:your-heroku-app)
-at [https://github.com/:github-user/:your-github-app/admin/hooks](https://github.com/:github-user/:your-github-app/admin/hooks)
+at [https://github.com/:github-user/:your-github-app/settings/hooks](https://github.com/:github-user/:your-github-app/settings/hooks)
 
 If you are using [Travis CI](http://travis-ci.org/), simply add the following to your `.travis.yml` file
 
